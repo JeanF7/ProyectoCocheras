@@ -37,4 +37,31 @@ public class EspacioServiceImp implements EspacioService{
     public void eliminar(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    @Transactional
+    public List<Espacio> guardarTodos(List<Espacio> espacios) {
+        return (List<Espacio>) repository.saveAll(espacios);
+    }
+
+    @Override
+    public List<Espacio> listarPorDisponibilidad(boolean disponibilidad) {
+        return repository.findByDisponibilidad(disponibilidad);
+    }
+
+    @Override
+    public List<Espacio> listarPorTipoEspacio(String tipoEspacio) {
+        return repository.findByTipoEspacio(tipoEspacio);
+    }
+
+    @Override
+    public List<Espacio> listarPorTarifa(double minTarifa, double maxTarifa) {
+        return repository.findByTarifaBetween(minTarifa, maxTarifa);
+    }
+
+    @Override
+    public List<Espacio> listarPorUbicacion(String ubicacion) {
+        return repository.findByUbicacionContaining(ubicacion);
+    }
+
 }
