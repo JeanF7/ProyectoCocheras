@@ -18,6 +18,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>msvc-personal</module>
+        <module>msvc-espacio</module>
     </modules>
 
     <properties>
