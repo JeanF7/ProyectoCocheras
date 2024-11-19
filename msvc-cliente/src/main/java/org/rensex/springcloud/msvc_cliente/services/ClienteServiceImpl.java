@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +37,41 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public void eliminar(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public List<Cliente> guardarTodos(List<Cliente> clientes) {
+        return (List<Cliente>) repository.saveAll(clientes);
+    }
+
+    @Override
+    public List<Cliente> porNombre(String nombre) {
+        return repository.findByNombre(nombre);
+    }
+
+    @Override
+    public List<Cliente> porNombreContaining(String keyword) {
+        return repository.findByNombreContaining(keyword);
+    }
+
+    @Override
+    public List<Cliente> porDni(String dni) {
+        return repository.findByDni(dni);
+    }
+
+    @Override
+    public List<Cliente> porFechaRegistroAfter(Date fecha) {
+        return repository.findByFechaRegistroAfter(fecha);
+    }
+
+    @Override
+    public List<Cliente> porMembresiaNombre(String nombreMembresia) {
+        return repository.findByMembresia_NombreMembresia(nombreMembresia);
+    }
+
+    @Override
+    public List<Cliente> listarOrdenadosPorFechaRegistroDesc() {
+        return repository.findAllByOrderByFechaRegistroDesc();
     }
 }

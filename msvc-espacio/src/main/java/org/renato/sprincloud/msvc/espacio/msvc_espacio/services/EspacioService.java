@@ -10,4 +10,11 @@ public interface EspacioService {
     Optional<Espacio> porId(Long id);
     Espacio guardar(Espacio espacio);
     void eliminar(Long id);
+    List<Espacio> guardarTodos(List<Espacio> espacios);
+
+    List<Espacio> listarPorDisponibilidad(boolean disponibilidad);
+    List<Espacio> listarPorTipoEspacio(String tipoEspacio);
+    List<Espacio> listarPorTarifa(double minTarifa, double maxTarifa);
+    List<Espacio> listarPorUbicacion(String ubicacion);
+
 }

@@ -61,4 +61,51 @@ public class EspacioController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/save-all")
+    public ResponseEntity<?> saveAll(@RequestBody List<Espacio> espacios) {
+        if (espacios == null || espacios.isEmpty()) {
+            return ResponseEntity.badRequest().body("La lista de Clientes está vacía.");
+        }
+        List<Espacio> alquileresGuardados = service.guardarTodos(espacios);
+        return ResponseEntity.status(HttpStatus.CREATED).body(alquileresGuardados);
+    }
+
+    @GetMapping("/disponibles")
+    public ResponseEntity<?> listarPorDisponibilidad(@RequestParam boolean disponibilidad) {
+        List<Espacio> espacios = service.listarPorDisponibilidad(disponibilidad);
+        if (espacios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(espacios);
+    }
+
+    @GetMapping("/tipo/{tipoEspacio}")
+    public ResponseEntity<?> listarPorTipoEspacio(@PathVariable String tipoEspacio) {
+        List<Espacio> espacios = service.listarPorTipoEspacio(tipoEspacio);
+        if (espacios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(espacios);
+    }
+
+    @GetMapping("/tarifa")
+    public ResponseEntity<?> listarPorTarifa(@RequestParam double minTarifa, @RequestParam double maxTarifa) {
+        List<Espacio> espacios = service.listarPorTarifa(minTarifa, maxTarifa);
+        if (espacios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(espacios);
+    }
+
+    @GetMapping("/ubicacion")
+    public ResponseEntity<?> listarPorUbicacion(@RequestParam String ubicacion) {
+        List<Espacio> espacios = service.listarPorUbicacion(ubicacion);
+        if (espacios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(espacios);
+    }
+
+
+
 }
