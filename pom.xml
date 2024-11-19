@@ -20,6 +20,7 @@
         <module>msvc-personal</module>
         <module>msvc-cliente</module>
         <module>msvc-espacio</module>
+        <module>msvc-reserva</module>
     </modules>
 
     <properties>
