@@ -2,8 +2,6 @@ package org.joseph.msvc_alquiler.models.entities;
 
 import jakarta.persistence.*;
 import org.joseph.msvc_alquiler.models.Cliente;
-import org.joseph.msvc_alquiler.models.CondicionesAlquiler;
-import org.joseph.msvc_alquiler.models.Facturacion;
 
 import java.time.LocalDate;
 
