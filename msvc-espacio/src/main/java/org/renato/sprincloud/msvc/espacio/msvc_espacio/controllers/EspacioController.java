@@ -41,11 +41,9 @@ public class EspacioController {
         if(espacioOptional.isPresent()) {
             Espacio espacioBaseDatos = espacioOptional.get();
             espacioBaseDatos.setUbicacion(espacio.getUbicacion());
-            espacioBaseDatos.setDimensiones(espacio.getDimensiones());
             espacioBaseDatos.setDisponibilidad(espacio.getDisponibilidad());
             espacioBaseDatos.setTipoEspacio(espacio.getTipoEspacio());
             espacioBaseDatos.setTarifa(espacio.getTarifa());
-            espacioBaseDatos.setHistorialUso(espacio.getHistorialUso());
             return ResponseEntity.status(HttpStatus.CREATED).body(service.guardar(espacioBaseDatos));
         }
         return ResponseEntity.notFound().build();
