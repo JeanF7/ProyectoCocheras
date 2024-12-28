@@ -39,15 +39,12 @@ public class AlquilerController {
         Optional<Alquiler> optionalAlquiler = alquilerService.porId(id);
         if (optionalAlquiler.isPresent()) {
             Alquiler alquilerExistente = optionalAlquiler.get();
+            alquilerExistente.setNombreEmpleado(alquiler.getNombreEmpleado());
             alquilerExistente.setEstadoAlquiler(alquiler.getEstadoAlquiler());
-            alquilerExistente.setFacturacion(alquiler.getFacturacion());
-            alquilerExistente.setCondicionesAlquiler(alquiler.getCondicionesAlquiler());
             alquilerExistente.setFechaFin(alquiler.getFechaFin());
             alquilerExistente.setFechaInicio(alquiler.getFechaInicio());
-            alquilerExistente.setiDReserva(alquiler.getiDReserva());
             alquilerExistente.setIdCliente(alquiler.getIdCliente());
             alquilerExistente.setIdEspacio(alquiler.getIdEspacio());
-            alquilerExistente.setIdPersonal(alquiler.getIdPersonal());
             Alquiler personalActualizado = alquilerService.guardar(alquilerExistente);
 
             return ResponseEntity.status(HttpStatus.OK).body(personalActualizado);
@@ -75,14 +72,14 @@ public class AlquilerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(alquileresGuardados);
     }
 
-    @GetMapping("/empleado/{idPersonal}")
-    public ResponseEntity<?> listarPorIdEmpleado(@PathVariable Long idPersonal) {
-        List<Alquiler> alquileres = alquilerService.listarPorIdPersonal(idPersonal);
-        if (alquileres.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(alquileres);
-    }
+//    @GetMapping("/empleado/{idPersonal}")
+//    public ResponseEntity<?> listarPorIdEmpleado(@PathVariable Long idPersonal) {
+//        List<Alquiler> alquileres = alquilerService.listarPorIdPersonal(idPersonal);
+//        if (alquileres.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(alquileres);
+//    }
 
     @GetMapping("/cliente/{idCliente}")
     public ResponseEntity<?> listarPorIdCliente(@PathVariable Long idCliente) {

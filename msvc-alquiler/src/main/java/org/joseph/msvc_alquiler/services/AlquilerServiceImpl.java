@@ -46,10 +46,10 @@ public class AlquilerServiceImpl implements AlquilerService{
         return (List<Alquiler>) alquilerRepository.saveAll(alquileres);
     }
 
-    @Override
-    public List<Alquiler> listarPorIdPersonal(Long idPersonal) {
-        return alquilerRepository.findByIdPersonal(idPersonal);
-    }
+//    @Override
+//    public List<Alquiler> listarPorIdPersonal(Long idPersonal) {
+//        return alquilerRepository.findByIdPersonal(idPersonal);
+//    }
 
     @Override
     public List<Alquiler> listarPorIdCliente(Long idCliente) {
