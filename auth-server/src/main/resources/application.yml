@@ -1,0 +1,11 @@
+server:
+  port: 9000 # Puerto del auth-server
+
+spring:
+  application:
+    name: auth-server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://127.0.0.1:9000" # Emisor del token JWT
