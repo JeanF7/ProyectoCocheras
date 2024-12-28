@@ -13,18 +13,19 @@ public class Alquiler {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "id_reserva", nullable = false)
-    private Long iDReserva;
+//    @JoinColumn(name = "id_reserva", nullable = false)
+//    private Long iDReserva;
 
+    private String nombreEmpleado;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private String estadoAlquiler;
 
-    @Embedded
-    private Facturacion facturacion;
-
-    @Embedded
-    private CondicionesAlquiler condicionesAlquiler;
+//    @Embedded
+//    private Facturacion facturacion;
+//
+//    @Embedded
+//    private CondicionesAlquiler condicionesAlquiler;
 
     @JoinColumn(name = "id_espacio", nullable = false)
     private Long idEspacio;
@@ -32,9 +33,17 @@ public class Alquiler {
     @JoinColumn(name = "id_cliente", nullable = false)
     private Long idCliente;
 
-    @JoinColumn(name = "id_personal", nullable = false)
-    private Long idPersonal;
+    public Long getId() {
+        return id;
+    }
 
+    public String getNombreEmpleado() {
+        return nombreEmpleado;
+    }
+
+    public void setNombreEmpleado(String nombreEmpleado) {
+        this.nombreEmpleado = nombreEmpleado;
+    }
 
     public LocalDate getFechaInicio() {
         return fechaInicio;
@@ -60,36 +69,12 @@ public class Alquiler {
         this.estadoAlquiler = estadoAlquiler;
     }
 
-    public Facturacion getFacturacion() {
-        return facturacion;
-    }
-
-    public void setFacturacion(Facturacion facturacion) {
-        this.facturacion = facturacion;
-    }
-
-    public Long getiDReserva() {
-        return iDReserva;
-    }
-
-    public void setiDReserva(Long iDReserva) {
-        this.iDReserva = iDReserva;
-    }
-
     public Long getIdEspacio() {
         return idEspacio;
     }
 
     public void setIdEspacio(Long idEspacio) {
         this.idEspacio = idEspacio;
-    }
-
-    public CondicionesAlquiler getCondicionesAlquiler() {
-        return condicionesAlquiler;
-    }
-
-    public void setCondicionesAlquiler(CondicionesAlquiler condicionesAlquiler) {
-        this.condicionesAlquiler = condicionesAlquiler;
     }
 
     public Long getIdCliente() {
@@ -100,11 +85,4 @@ public class Alquiler {
         this.idCliente = idCliente;
     }
 
-    public Long getIdPersonal() {
-        return idPersonal;
-    }
-
-    public void setIdPersonal(Long idPersonal) {
-        this.idPersonal = idPersonal;
-    }
 }

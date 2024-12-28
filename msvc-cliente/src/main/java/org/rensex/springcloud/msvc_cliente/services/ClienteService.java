@@ -11,8 +11,9 @@ public interface ClienteService {
     Optional<Cliente> porId(Long id);
     Cliente guardar(Cliente cliente);
     void eliminar(Long id);
-    List<Cliente> guardarTodos(List<Cliente> clientes);
 
+    //métodos de filtrado
+    List<Cliente> guardarTodos(List<Cliente> clientes);
     List<Cliente> porNombre(String nombre);
     List<Cliente> porNombreContaining(String keyword);
     List<Cliente> porDni(String dni);

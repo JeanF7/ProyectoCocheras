@@ -13,7 +13,7 @@ public interface AlquilerService {
     void eliminar(Long id);
     List<Alquiler> guardarTodos(List<Alquiler> alquileres);
 
-    List<Alquiler> listarPorIdPersonal(Long idPersonal);
+//    List<Alquiler> listarPorIdPersonal(Long idPersonal);
     List<Alquiler> listarPorIdCliente(Long idCliente);
     List<Alquiler> listarPorEstado(String estado);
     List<Alquiler> listarPorFechas(LocalDate start, LocalDate end);

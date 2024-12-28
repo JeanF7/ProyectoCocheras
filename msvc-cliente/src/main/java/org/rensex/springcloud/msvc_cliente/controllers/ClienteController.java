@@ -36,6 +36,15 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.guardar(cliente));
     }
 
+    @PostMapping("crear-varios/{membresia}")
+    public ResponseEntity<?> crearVariosCliente(@RequestBody List<Cliente> clientes, @PathVariable String membresia) {
+        for (int i = 0; i < clientes.size(); i++) {
+            clientes.get(i).setMembresia(new Membresia(membresia));
+            clienteService.guardar(clientes.get(i));
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, @PathVariable Long id) {
         Optional<Cliente> optionalCliente = clienteService.porId(id);
