@@ -21,16 +21,16 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/authorized").permitAll()
 
                 // Solo los usuarios con los scopes "SCOPE_read" o "SCOPE_write" pueden acceder a "/list"
-                .requestMatchers(HttpMethod.GET, "/user/listar").hasAnyAuthority("SCOPE_read", "SCOPE_write")
+//                .requestMatchers(HttpMethod.GET, "/user/listar").hasAnyAuthority("SCOPE_read")
 
                 // Solo los usuarios con el scope "SCOPE_write" pueden acceder a "/create"
-                .requestMatchers(HttpMethod.POST, "/admin/crearAlquiler").hasAuthority("SCOPE_write")
+//                .requestMatchers(HttpMethod.POST, "/admin/crearAlquiler").hasAuthority("SCOPE_write")
 
                 // Solo los usuarios con el scope "SCOPE_admin" pueden acceder a "/admin"
-//                        .requestMatchers(HttpMethod.GET, "/admin").hasAuthority("SCOPE_admin")
+                        .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("SCOPE_admin")
 
                 // Solo los usuarios con el scope "SCOPE_user" pueden acceder a "/user"
-//                        .requestMatchers(HttpMethod.GET, "/user").hasAuthority("SCOPE_user")
+                        .requestMatchers(HttpMethod.GET, "/user/**").hasAuthority("SCOPE_user")
 
                 // Cualquier otra solicitud debe estar autenticada
                 .anyRequest().authenticated())
