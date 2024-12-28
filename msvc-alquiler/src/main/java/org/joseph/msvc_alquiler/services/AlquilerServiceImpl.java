@@ -52,10 +52,10 @@ public class AlquilerServiceImpl implements AlquilerService{
         return (List<Alquiler>) alquilerRepository.saveAll(alquileres);
     }
 
-    @Override
-    public List<Alquiler> listarPorIdCliente(Long idCliente) {
-        return alquilerRepository.findByIdCliente(idCliente);
-    }
+//    @Override
+//    public List<Alquiler> listarPorIdCliente(Long idCliente) {
+//        return alquilerRepository.findByIdCliente(idCliente);
+//    }
 
     @Override
     public List<Alquiler> listarPorEstado(String estado) {
@@ -67,10 +67,10 @@ public class AlquilerServiceImpl implements AlquilerService{
         return alquilerRepository.findByFechaInicioBetween(start, end);
     }
 
-    @Override
-    public List<Alquiler> listarPorIdEspacio(Long idEspacio) {
-        return alquilerRepository.findByIdEspacio(idEspacio);
-    }
+//    @Override
+//    public List<Alquiler> listarPorIdEspacio(Long idEspacio) {
+//        return alquilerRepository.findByIdEspacio(idEspacio);
+//    }
 
     @Override
     public Optional<Espacio> asignarEspacio(Espacio espacio, Long alquilerId) {
