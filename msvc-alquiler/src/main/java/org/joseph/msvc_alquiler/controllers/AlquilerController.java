@@ -8,27 +8,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/alquiler")
+@RequestMapping("")
 public class AlquilerController {
     @Autowired
     private AlquilerService alquilerService;
 
-    @GetMapping
+    @GetMapping("/authorized")
+    public Map<String, String> authorized(@RequestParam String code){
+        return Collections.singletonMap("code", code);
+    }
+
+    @GetMapping("/user/listar")
     public List<Alquiler> listarPersonal() {
         return alquilerService.listar();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<?> detalleAlquiler(@PathVariable Long id) {
         Optional<Alquiler> optionalPersonal = alquilerService.porId(id);
         return optionalPersonal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/admin/crearAlquiler")
     public ResponseEntity<?> crearAlquiler(@RequestBody Alquiler alquiler) {
         Alquiler alquiler1 = alquilerService.guardar(alquiler);
         return ResponseEntity.status(HttpStatus.CREATED).body(alquiler1);

@@ -19,7 +19,7 @@ public class PersonalController {
     @Autowired
     private PersonalService personalService;
 
-    @GetMapping
+    @GetMapping("/admin/")
     public List<Personal> listarPersonal() {
         return personalService.listar();
     }

@@ -1,0 +1,23 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://127.0.0.1:9000"
+      client:
+        registration:
+          client-cochera:
+            provider: spring
+            client-id: client-cochera
+            client-secret: jean
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8029/authorized"
+            scope:
+              - openid
+              - profile
+              - read
+              - write
+            client-name: client-cochera
+        provider:
+          spring:
+            issuer-uri: "http://127.0.0.1:9000"
