@@ -28,9 +28,6 @@ public class Alquiler {
 //    @Embedded
 //    private CondicionesAlquiler condicionesAlquiler;
 
-    @JoinColumn(name = "id_espacio", nullable = false)
-    private Long idEspacio;
-
     @Column(name = "id_cliente", nullable = false)
     private Long idCliente;
 
@@ -72,14 +69,6 @@ public class Alquiler {
 
     public void setEstadoAlquiler(String estadoAlquiler) {
         this.estadoAlquiler = estadoAlquiler;
-    }
-
-    public Long getIdEspacio() {
-        return idEspacio;
-    }
-
-    public void setIdEspacio(Long idEspacio) {
-        this.idEspacio = idEspacio;
     }
 
     public Long getIdCliente() {

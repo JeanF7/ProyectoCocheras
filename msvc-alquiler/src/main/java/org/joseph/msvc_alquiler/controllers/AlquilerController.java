@@ -86,7 +86,6 @@ public class AlquilerController {
             alquilerExistente.getCliente().setMembresia(cliente.getMembresia());
             alquilerExistente.setIdCliente(cliente.getClienteId());
 
-            alquilerExistente.setIdEspacio(alquiler.getIdEspacio());
             Alquiler personalActualizado = alquilerService.guardar(alquilerExistente);
 
             return ResponseEntity.status(HttpStatus.OK).body(personalActualizado);
@@ -144,15 +143,6 @@ public class AlquilerController {
     @GetMapping("/fechas")
     public ResponseEntity<?> listarPorFechas(@RequestParam LocalDate start, @RequestParam LocalDate end) {
         List<Alquiler> alquileres = alquilerService.listarPorFechas(start, end);
-        if (alquileres.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(alquileres);
-    }
-
-    @GetMapping("/espacio/{idEspacio}")
-    public ResponseEntity<?> listarPorIdEspacio(@PathVariable Long idEspacio) {
-        List<Alquiler> alquileres = alquilerService.listarPorIdEspacio(idEspacio);
         if (alquileres.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

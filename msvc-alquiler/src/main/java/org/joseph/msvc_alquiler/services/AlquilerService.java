@@ -18,6 +18,5 @@ public interface AlquilerService {
     List<Alquiler> listarPorIdCliente(Long idCliente);
     List<Alquiler> listarPorEstado(String estado);
     List<Alquiler> listarPorFechas(LocalDate start, LocalDate end);
-    List<Alquiler> listarPorIdEspacio(Long idEspacio);
 
 }

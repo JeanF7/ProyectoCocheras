@@ -64,10 +64,4 @@ public class AlquilerServiceImpl implements AlquilerService{
     public List<Alquiler> listarPorFechas(LocalDate start, LocalDate end) {
         return alquilerRepository.findByFechaInicioBetween(start, end);
     }
-
-    @Override
-    public List<Alquiler> listarPorIdEspacio(Long idEspacio) {
-        return alquilerRepository.findByIdEspacio(idEspacio);
-    }
-
 }
