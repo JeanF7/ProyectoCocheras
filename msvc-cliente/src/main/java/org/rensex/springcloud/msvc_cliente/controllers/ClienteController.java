@@ -30,7 +30,7 @@ public class ClienteController {
         return optionalCliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("{membresia}")
+    @PostMapping("/{membresia}")
     public ResponseEntity<?> crearCliente(@RequestBody Cliente cliente, @PathVariable String membresia) {
         cliente.setMembresia(new Membresia(membresia));
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.guardar(cliente));
@@ -45,9 +45,9 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, @PathVariable Long id) {
-        Optional<Cliente> optionalCliente = clienteService.porId(id);
+    @PutMapping("/{idCliente}")
+    public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, @PathVariable Long idCliente) {
+        Optional<Cliente> optionalCliente = clienteService.porId(idCliente);
         if (optionalCliente.isPresent()) {
             Cliente clienteExistente = optionalCliente.get();
             clienteExistente.setNombre(cliente.getNombre() != null ? cliente.getNombre() : clienteExistente.getNombre());
@@ -55,7 +55,7 @@ public class ClienteController {
             clienteExistente.setTelefono(cliente.getTelefono() != null ? cliente.getTelefono() : clienteExistente.getTelefono());
             clienteExistente.setEmail(cliente.getEmail() != null ? cliente.getEmail() : clienteExistente.getEmail());
             clienteExistente.setFechaRegistro(cliente.getFechaRegistro() != null ? cliente.getFechaRegistro() : clienteExistente.getFechaRegistro());
-            clienteExistente.setMembresia(cliente.getMembresia() != null ? cliente.getMembresia() : clienteExistente.getMembresia());
+            clienteExistente.setMembresia(cliente.getMembresia() != null ? new Membresia(cliente.getMembresia().getNombreMembresia()) : clienteExistente.getMembresia());
             Cliente clienteActualizado = clienteService.guardar(clienteExistente);
 
             return ResponseEntity.status(HttpStatus.OK).body(clienteActualizado);

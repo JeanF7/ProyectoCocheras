@@ -14,10 +14,10 @@ public interface AlquilerService {
     List<Alquiler> guardarTodos(List<Alquiler> alquileres);
 
 //    List<Alquiler> listarPorIdPersonal(Long idPersonal);
+    //método para obtener todos los alquileres de 1 cliente
     List<Alquiler> listarPorIdCliente(Long idCliente);
     List<Alquiler> listarPorEstado(String estado);
     List<Alquiler> listarPorFechas(LocalDate start, LocalDate end);
     List<Alquiler> listarPorIdEspacio(Long idEspacio);
-
 
 }

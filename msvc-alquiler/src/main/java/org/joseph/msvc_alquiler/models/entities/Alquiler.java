@@ -1,6 +1,7 @@
 package org.joseph.msvc_alquiler.models.entities;
 
 import jakarta.persistence.*;
+import org.joseph.msvc_alquiler.models.Cliente;
 import org.joseph.msvc_alquiler.models.CondicionesAlquiler;
 import org.joseph.msvc_alquiler.models.Facturacion;
 
@@ -30,8 +31,12 @@ public class Alquiler {
     @JoinColumn(name = "id_espacio", nullable = false)
     private Long idEspacio;
 
-    @JoinColumn(name = "id_cliente", nullable = false)
+    @Column(name = "id_cliente", nullable = false)
     private Long idCliente;
+
+    //atributo de cliente para el caso en el que se quiera crear un cliente antes de crear o modificar un alquiler
+    @Transient
+    private Cliente cliente;
 
     public Long getId() {
         return id;
@@ -85,4 +90,11 @@ public class Alquiler {
         this.idCliente = idCliente;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 }
