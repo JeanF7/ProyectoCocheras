@@ -43,8 +43,6 @@ public class AlquilerController {
             alquilerExistente.setEstadoAlquiler(alquiler.getEstadoAlquiler());
             alquilerExistente.setFechaFin(alquiler.getFechaFin());
             alquilerExistente.setFechaInicio(alquiler.getFechaInicio());
-            alquilerExistente.setIdCliente(alquiler.getIdCliente());
-            alquilerExistente.setIdEspacio(alquiler.getIdEspacio());
             Alquiler personalActualizado = alquilerService.guardar(alquilerExistente);
 
             return ResponseEntity.status(HttpStatus.OK).body(personalActualizado);

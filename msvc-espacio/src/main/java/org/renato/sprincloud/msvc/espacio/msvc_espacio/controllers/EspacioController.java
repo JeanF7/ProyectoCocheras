@@ -1,7 +1,6 @@
 package org.renato.sprincloud.msvc.espacio.msvc_espacio.controllers;
 
-import jakarta.persistence.GeneratedValue;
-import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entity.Espacio;
+import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entities.Espacio;
 import org.renato.sprincloud.msvc.espacio.msvc_espacio.services.EspacioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -104,6 +103,10 @@ public class EspacioController {
         return ResponseEntity.ok(espacios);
     }
 
+    @GetMapping("/espacios-por-alquiler")
+    public ResponseEntity<?> espacioPorVenta(@RequestParam List<Long> ids){
+        return ResponseEntity.ok(service.espaciosPorId(ids));
+    }
 
 
 }

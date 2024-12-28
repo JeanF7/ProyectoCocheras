@@ -1,12 +1,7 @@
-package org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entity;
+package org.joseph.msvc_alquiler.models;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "espacios")
 public class Espacio {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long idEspacio;
     private String ubicacion;
     private boolean disponibilidad;
@@ -29,8 +24,7 @@ public class Espacio {
         this.ubicacion = ubicacion;
     }
 
-
-    public boolean getDisponibilidad() {
+    public boolean isDisponibilidad() {
         return disponibilidad;
     }
 
@@ -53,6 +47,4 @@ public class Espacio {
     public void setTarifa(double tarifa) {
         this.tarifa = tarifa;
     }
-
-
 }
