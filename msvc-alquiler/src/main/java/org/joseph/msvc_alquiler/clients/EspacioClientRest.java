@@ -17,6 +17,6 @@ public interface EspacioClientRest {
     Espacio crear(@RequestParam Espacio espacio);
 
     //Metodo de comunicación
-    @GetMapping("/productos-por-alquiler")
+    @GetMapping("/espacios-por-alquiler")
     List<Espacio> espacioPorAlquiler(@RequestParam Iterable<Long> ids);
 }

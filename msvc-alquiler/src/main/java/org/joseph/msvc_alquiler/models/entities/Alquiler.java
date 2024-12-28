@@ -113,4 +113,8 @@ public class Alquiler {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
+    }
 }
