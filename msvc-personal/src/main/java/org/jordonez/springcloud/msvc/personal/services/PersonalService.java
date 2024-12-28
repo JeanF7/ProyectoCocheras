@@ -12,8 +12,8 @@ public interface PersonalService {
     Optional<Personal> porId(Long id);
     Personal guardar(Personal personal);
     void eliminar(Long id);
+    List<Personal> guardarTodos(List<Personal> personals);
 
-    //
     List<Personal> porNombre(String nombre);
 
     List<Personal> porDni(String dni);

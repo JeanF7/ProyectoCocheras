@@ -8,7 +8,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface PersonalRepository extends CrudRepository<Personal, Long> {
-
     List<Personal> findByNombre(String nombre);
 
     List<Personal> findByDni(String dni);

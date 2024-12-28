@@ -40,6 +40,12 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
+    public List<Cliente> guardarTodos(List<Cliente> clientes) {
+        return (List<Cliente>) repository.saveAll(clientes);
+    }
+
+    @Override
     public List<Cliente> porNombre(String nombre) {
         return repository.findByNombre(nombre);
     }

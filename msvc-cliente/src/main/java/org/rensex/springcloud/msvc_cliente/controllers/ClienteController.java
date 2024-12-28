@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -96,7 +95,15 @@ public class ClienteController {
         return ResponseEntity.notFound().build();
     }
 
-    //métodos de filtrado:
+    @PostMapping("/save-all")
+    public ResponseEntity<?> saveAll(@RequestBody List<Cliente> clientes) {
+        if (clientes == null || clientes.isEmpty()) {
+            return ResponseEntity.badRequest().body("La lista de Clientes está vacía.");
+        }
+        List<Cliente> alquileresGuardados = clienteService.guardarTodos(clientes);
+        return ResponseEntity.status(HttpStatus.CREATED).body(alquileresGuardados);
+    }
+
     @GetMapping("/buscar    -por-nombre/{nombre}")
     public ResponseEntity<?> detalleCliente(@PathVariable String nombre) {
         List<Cliente> listaCliente = clienteService.porNombre(nombre);

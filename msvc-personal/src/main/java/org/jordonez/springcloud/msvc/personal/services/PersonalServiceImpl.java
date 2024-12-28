@@ -41,6 +41,12 @@ public class PersonalServiceImpl implements PersonalService{
     }
 
     @Override
+    @Transactional
+    public List<Personal> guardarTodos(List<Personal> personals) {
+        return (List<Personal>) personalRepository.saveAll(personals);
+    }
+
+    @Override
     public List<Personal> porNombre(String nombre) {
         return personalRepository.findByNombre(nombre);
     }
@@ -74,4 +80,5 @@ public class PersonalServiceImpl implements PersonalService{
     public List<Personal> listarOrdenadosPorFechaContratacion() {
         return personalRepository.findAllByOrderByFechaContratacionDesc();
     }
+
 }

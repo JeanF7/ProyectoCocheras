@@ -86,6 +86,15 @@ public class PersonalController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/save-all")
+    public ResponseEntity<?> saveAll(@RequestBody List<Personal> personals) {
+        if (personals == null || personals.isEmpty()) {
+            return ResponseEntity.badRequest().body("La lista de Clientes está vacía.");
+        }
+        List<Personal> personalsGuardados = personalService.guardarTodos(personals);
+        return ResponseEntity.status(HttpStatus.CREATED).body(personalsGuardados);
+    }
+
     @GetMapping("/buscar-por-nombre/{nombre}")
     public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
         List<Personal> listaPersonal = personalService.porNombre(nombre);
