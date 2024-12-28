@@ -1,7 +1,6 @@
 package org.renato.sprincloud.msvc.espacio.msvc_espacio.controllers;
 
-import jakarta.persistence.GeneratedValue;
-import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entity.Espacio;
+import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entities.Espacio;
 import org.renato.sprincloud.msvc.espacio.msvc_espacio.services.EspacioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,11 +40,9 @@ public class EspacioController {
         if(espacioOptional.isPresent()) {
             Espacio espacioBaseDatos = espacioOptional.get();
             espacioBaseDatos.setUbicacion(espacio.getUbicacion());
-            espacioBaseDatos.setDimensiones(espacio.getDimensiones());
             espacioBaseDatos.setDisponibilidad(espacio.getDisponibilidad());
             espacioBaseDatos.setTipoEspacio(espacio.getTipoEspacio());
             espacioBaseDatos.setTarifa(espacio.getTarifa());
-            espacioBaseDatos.setHistorialUso(espacio.getHistorialUso());
             return ResponseEntity.status(HttpStatus.CREATED).body(service.guardar(espacioBaseDatos));
         }
         return ResponseEntity.notFound().build();
@@ -106,6 +103,10 @@ public class EspacioController {
         return ResponseEntity.ok(espacios);
     }
 
+    @GetMapping("/espacios-por-alquiler")
+    public ResponseEntity<?> espacioPorVenta(@RequestParam List<Long> ids){
+        return ResponseEntity.ok(service.espaciosPorId(ids));
+    }
 
 
 }

@@ -1,21 +1,12 @@
-package org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entity;
+package org.joseph.msvc_alquiler.models;
 
-import jakarta.persistence.*;
-import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.HistorialUso;
-
-@Entity
-@Table(name = "espacios")
 public class Espacio {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long idEspacio;
     private String ubicacion;
-    private double dimensiones;
     private boolean disponibilidad;
     private String tipoEspacio;
     private double tarifa;
-    @Embedded
-    private HistorialUso historialUso;
 
     public long getIdEspacio() {
         return idEspacio;
@@ -33,15 +24,7 @@ public class Espacio {
         this.ubicacion = ubicacion;
     }
 
-    public double getDimensiones() {
-        return dimensiones;
-    }
-
-    public void setDimensiones(double dimensiones) {
-        this.dimensiones = dimensiones;
-    }
-
-    public boolean getDisponibilidad() {
+    public boolean isDisponibilidad() {
         return disponibilidad;
     }
 
@@ -64,13 +47,4 @@ public class Espacio {
     public void setTarifa(double tarifa) {
         this.tarifa = tarifa;
     }
-
-    public HistorialUso getHistorialUso() {
-        return historialUso;
-    }
-
-    public void setHistorialUso(HistorialUso historialUso) {
-        this.historialUso = historialUso;
-    }
-
 }

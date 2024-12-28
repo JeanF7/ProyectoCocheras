@@ -1,6 +1,6 @@
 package org.renato.sprincloud.msvc.espacio.msvc_espacio.services;
 
-import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entity.Espacio;
+import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entities.Espacio;
 import org.renato.sprincloud.msvc.espacio.msvc_espacio.repositories.EspacioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,23 +45,33 @@ public class EspacioServiceImp implements EspacioService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Espacio> listarPorDisponibilidad(boolean disponibilidad) {
         return repository.findByDisponibilidad(disponibilidad);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Espacio> listarPorTipoEspacio(String tipoEspacio) {
         return repository.findByTipoEspacio(tipoEspacio);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Espacio> listarPorTarifa(double minTarifa, double maxTarifa) {
         return repository.findByTarifaBetween(minTarifa, maxTarifa);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Espacio> listarPorUbicacion(String ubicacion) {
         return repository.findByUbicacionContaining(ubicacion);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Espacio> espaciosPorId(Iterable<Long> ids) {
+        return (List<Espacio>) repository.findAllById(ids);
     }
 
 }

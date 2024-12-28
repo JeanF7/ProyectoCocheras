@@ -1,15 +1,10 @@
-package org.rensex.springcloud.msvc_cliente.models.entities;
+package org.joseph.msvc_alquiler.models;
 
-import jakarta.persistence.*;
-import org.rensex.springcloud.msvc_cliente.models.Membresia;
+import jakarta.persistence.Embedded;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "Cliente")
 public class Cliente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long clienteId;
     private String nombre;
     private String dni;

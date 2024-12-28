@@ -1,4 +1,4 @@
-package org.rensex.springcloud.msvc_cliente.models;
+package org.joseph.msvc_alquiler.models;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
@@ -20,26 +20,24 @@ public class Membresia {
 
     public Membresia(String nombreMembresia) {
         this.beneficios = new ArrayList<>();
+        this.nombreMembresia = nombreMembresia;
         inicializarMembresia(nombreMembresia.toLowerCase());
     }
 
     private void inicializarMembresia(String nombreMembresia) {
         switch (nombreMembresia) {
             case "gold":
-                this.nombreMembresia = "gold";
                 this.descuento = 0.9;
                 this.beneficios.add("Acceso a eventos especiales");
                 this.beneficios.add("Descuento en productos");
                 break;
             case "premium":
-                this.nombreMembresia = "premium";
                 this.descuento = 0.8;
                 this.beneficios.add("Acceso VIP a eventos");
                 this.beneficios.add("Descuento en productos y servicios");
                 this.beneficios.add("Atención personalizada");
                 break;
             default:
-                this.nombreMembresia = "regular";
                 this.descuento = 1;
                 this.beneficios.add("Acceso básico a servicios");
         }

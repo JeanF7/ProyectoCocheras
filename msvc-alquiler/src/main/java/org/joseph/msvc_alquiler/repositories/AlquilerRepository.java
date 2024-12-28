@@ -10,5 +10,5 @@ public interface AlquilerRepository extends CrudRepository<Alquiler, Long> {
     List<Alquiler> findByIdCliente(Long idCliente);
     List<Alquiler> findByEstadoAlquiler(String estado);
     List<Alquiler> findByFechaInicioBetween(LocalDate start, LocalDate end);
-    List<Alquiler> findByIdEspacio(Long idEspacio);
+    //List<Alquiler> findByIdEspacio(Long idEspacio);
 }

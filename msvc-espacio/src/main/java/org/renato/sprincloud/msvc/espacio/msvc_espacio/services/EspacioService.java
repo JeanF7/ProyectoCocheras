@@ -1,6 +1,6 @@
 package org.renato.sprincloud.msvc.espacio.msvc_espacio.services;
 
-import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entity.Espacio;
+import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entities.Espacio;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +16,8 @@ public interface EspacioService {
     List<Espacio> listarPorTipoEspacio(String tipoEspacio);
     List<Espacio> listarPorTarifa(double minTarifa, double maxTarifa);
     List<Espacio> listarPorUbicacion(String ubicacion);
+
+    //comunicación
+    List<Espacio> espaciosPorId(Iterable<Long> ids);
 
 }

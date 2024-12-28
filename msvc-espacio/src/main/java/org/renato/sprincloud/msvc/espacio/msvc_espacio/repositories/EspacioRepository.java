@@ -1,6 +1,6 @@
 package org.renato.sprincloud.msvc.espacio.msvc_espacio.repositories;
 
-import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entity.Espacio;
+import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entities.Espacio;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
