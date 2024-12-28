@@ -20,8 +20,6 @@ public class Cliente {
     @Embedded
     private Membresia membresia;
 
-    //private List<Long> historialAlquileres;
-
     public Long getClienteId() {
         return clienteId;
     }
