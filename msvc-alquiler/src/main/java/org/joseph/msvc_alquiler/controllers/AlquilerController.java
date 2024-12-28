@@ -3,6 +3,8 @@ package org.joseph.msvc_alquiler.controllers;
 import feign.FeignException;
 import org.joseph.msvc_alquiler.clients.ClienteClientRest;
 import org.joseph.msvc_alquiler.models.Cliente;
+import feign.FeignException;
+import org.joseph.msvc_alquiler.models.Espacio;
 import org.joseph.msvc_alquiler.models.entities.Alquiler;
 import org.joseph.msvc_alquiler.services.AlquilerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -148,4 +151,73 @@ public class AlquilerController {
         }
         return ResponseEntity.ok(alquileres);
     }
+
+//    @GetMapping("/espacio/{idEspacio}")
+//    public ResponseEntity<?> listarPorIdEspacio(@PathVariable Long idEspacio) {
+//        List<Alquiler> alquileres = alquilerService.listarPorIdEspacio(idEspacio);
+//        if (alquileres.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(alquileres);
+//    }
+
+    //Métodos de la comunicación
+    @PutMapping("/asignar-espacio/{alquilerId}")
+    public ResponseEntity<?> asignarEspacio(@RequestBody Espacio espacio, @PathVariable Long alquilerId){
+        Optional<Espacio> espacioOptional;
+        try {
+            espacioOptional = alquilerService.asignarEspacio(espacio, alquilerId);
+        }catch (FeignException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).
+                    body(Collections.singletonMap("Mensaje", "No existe el espacio " +
+                            "por el id o error en la comunicación: " + e.getMessage()));
+        }
+        if(espacioOptional.isPresent()) return ResponseEntity.status(HttpStatus.CREATED).body(espacioOptional.get());
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/crear-espacio/{alquilerId}")
+    public ResponseEntity<?> crearEspacio(@RequestBody Espacio espacio,
+                                           @PathVariable Long alquilerId){
+        Optional<Espacio> espacioOptional;
+        try{
+            espacioOptional = alquilerService.crearEspacio(espacio, alquilerId);
+        }catch(FeignException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).
+                    body(Collections.singletonMap("Mensaje","No se creó el espacio " +
+                            "o error en la comunicación: "+e.getMessage()));
+        }
+        if(espacioOptional.isPresent())
+            return ResponseEntity.status(HttpStatus.CREATED).body(espacioOptional.get());
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/eliminar-espacio/{alquilerId}")
+    public ResponseEntity<?> eliminarProducto(@RequestBody Espacio espacio,
+                                              @PathVariable Long alquilerId){
+        Optional<Espacio> espacioOptional;
+        try{
+            espacioOptional = alquilerService.eliminarEspacio(espacio, alquilerId);
+        }catch(FeignException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).
+                    body(Collections.singletonMap("Mensaje","No existe el espacio " +
+                            "por el id o error en la comunicación: "+e.getMessage()));
+        }
+        if(espacioOptional.isPresent())
+            return ResponseEntity.status(HttpStatus.OK).body(espacioOptional.get());
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/detalleAlquiler/{id}")
+    public ResponseEntity<?> detalleDetalleAlquiler(@PathVariable Long id){
+        Optional espacioOptional = alquilerService.porIdConEspacio(id);
+        if(espacioOptional.isPresent())
+            return ResponseEntity.ok(espacioOptional.get());
+
+        return ResponseEntity.notFound().build();
+    }
+
 }
