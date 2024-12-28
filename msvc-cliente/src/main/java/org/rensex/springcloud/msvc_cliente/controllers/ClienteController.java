@@ -73,28 +73,6 @@ public class ClienteController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{idCliente}/agregarAlquiler")
-    public ResponseEntity<?> agregarAlquiler(@RequestParam Long idAlquiler, @PathVariable Long idCliente) {
-        Optional<Cliente> optionalCliente = clienteService.porId(idCliente);
-        if (optionalCliente.isPresent()) {
-            //optionalCliente.get().getHistorialAlquileres().add(idAlquiler);
-            clienteService.guardar(optionalCliente.get());
-            return ResponseEntity.status(HttpStatus.OK).body(idAlquiler);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @PutMapping("/{idCliente}/eliminarAlquiler")
-    public ResponseEntity<?> eliminarAlquiler(@RequestParam Long idAlquiler, @PathVariable Long idCliente) {
-        Optional<Cliente> optionalCliente = clienteService.porId(idCliente);
-        if (optionalCliente.isPresent()) {
-            //optionalCliente.get().getHistorialAlquileres().remove(idAlquiler);
-            clienteService.guardar(optionalCliente.get());
-            return ResponseEntity.status(HttpStatus.OK).body(idAlquiler);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
     @PostMapping("/save-all")
     public ResponseEntity<?> saveAll(@RequestBody List<Cliente> clientes) {
         if (clientes == null || clientes.isEmpty()) {
@@ -104,7 +82,7 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(alquileresGuardados);
     }
 
-    @GetMapping("/buscar    -por-nombre/{nombre}")
+    @GetMapping("/buscar-por-nombre/{nombre}")
     public ResponseEntity<?> detalleCliente(@PathVariable String nombre) {
         List<Cliente> listaCliente = clienteService.porNombre(nombre);
         if (listaCliente.isEmpty()) {
