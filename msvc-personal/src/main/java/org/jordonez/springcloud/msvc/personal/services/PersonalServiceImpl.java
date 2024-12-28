@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +38,40 @@ public class PersonalServiceImpl implements PersonalService{
     @Transactional
     public void eliminar(Long id) {
         personalRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Personal> porNombre(String nombre) {
+        return personalRepository.findByNombre(nombre);
+    }
+
+    @Override
+    public List<Personal> porDni(String dni) {
+        return personalRepository.findByDni(dni);
+    }
+
+    @Override
+    public List<Personal> porRol(String rol) {
+        return personalRepository.findByRol(rol);
+    }
+
+    @Override
+    public List<Personal> porFechaContratacionAfter(LocalDate fecha) {
+        return personalRepository.findByFechaContratacionAfter(fecha);
+    }
+
+    @Override
+    public List<Personal> porTurnoHorario(LocalTime inicio, LocalTime fin) {
+        return personalRepository.findByTurnoTrabajo_HorarioInicioBetween(inicio, fin);
+    }
+
+    @Override
+    public List<Personal> porDiaLaboral(String dia) {
+        return personalRepository.findByTurnoTrabajo_DiasLaboralesContaining(dia);
+    }
+
+    @Override
+    public List<Personal> listarOrdenadosPorFechaContratacion() {
+        return personalRepository.findAllByOrderByFechaContratacionDesc();
     }
 }
