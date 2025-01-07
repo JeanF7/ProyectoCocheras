@@ -11,7 +11,7 @@ spring:
             client-id: client-cochera
             client-secret: jean
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8029/authorized"
+            redirect-uri: "http://127.0.0.1:8029/api/alquiler/authorized"
             scope:
               - openid
               - profile

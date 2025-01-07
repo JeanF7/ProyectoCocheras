@@ -85,8 +85,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")  // Usa "ROLE_ADMIN"
-                                .requestMatchers("/user/**").hasAuthority("ROLE_USER")    // Usa "ROLE_USER"
+                                .requestMatchers("/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")  // Usa "ROLE_ADMIN"
+                                .requestMatchers("/api/alquiler/user/**").hasAuthority("ROLE_USER")    // Usa "ROLE_USER"
                                 .anyRequest().authenticated()                             // Cualquier otra solicitud debe estar autenticada
                 )
                 .csrf(csrf -> csrf.disable())
@@ -132,8 +132,8 @@ public class SecurityConfig {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://127.0.0.1:8029/login/oauth2/code/client-cochera")
-                .redirectUri("http://127.0.0.1:8029/authorized")
+                .redirectUri("http://127.0.0.1:8029/api/alquiler/login/oauth2/code/client-cochera")
+                .redirectUri("http://127.0.0.1:8029/api/alquiler/authorized")
                 .postLogoutRedirectUri("http://127.0.0.1:8029/logout")
                 .scope("read")
                 .scope("write")

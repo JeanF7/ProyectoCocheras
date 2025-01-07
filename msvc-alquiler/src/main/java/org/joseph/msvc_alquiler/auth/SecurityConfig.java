@@ -37,7 +37,7 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests((http) -> http
                         // Permite acceso a todos a la ruta "/authorized"
-                        .requestMatchers(HttpMethod.GET, "/authorized").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/alquiler/authorized").permitAll()
 
                         // Solo los usuarios con el scope "SCOPE_read" pueden acceder a "/list"
                         // Descomentado como ejemplo para permisos de scope
@@ -48,11 +48,11 @@ public class SecurityConfig {
 //                .requestMatchers(HttpMethod.POST, "/admin/crearAlquiler").hasAuthority("SCOPE_write")
 
                         // Solo los usuarios con el role "ADMIN" pueden acceder a "/admin"
-                        .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
 
                         // Solo los usuarios con el role "USER" pueden acceder a "/user"
-                        .requestMatchers(HttpMethod.GET, "/user/**").hasAuthority("ROLE_USER")
+                        .requestMatchers(HttpMethod.GET, "/api/alquiler/user/**").hasAuthority("ROLE_USER")
 
                         // Cualquier otra solicitud debe estar autenticada
                         .anyRequest().authenticated())
