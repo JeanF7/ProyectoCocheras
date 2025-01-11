@@ -226,4 +226,10 @@ public class AlquilerController {
         return ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/eliminar-detalleAlquiler/{id}")
+    public ResponseEntity<?> eliminarDetalleAlquilerPorId(@PathVariable Long id){
+        alquilerService.eliminarDetalleAlquilerPorId(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

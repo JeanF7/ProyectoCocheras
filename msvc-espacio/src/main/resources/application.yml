@@ -1,0 +1,23 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://127.0.0.1:9000"  # Dirección del servidor de autorización para validar los JWT
+      client:
+        registration:
+          client-cochera:
+            provider: spring
+            client-id: client-cochera
+            client-secret: jean
+            authorization-grant-type: authorization_code  # Tipo de flujo (Authorization Code)
+            redirect-uri: "http://127.0.0.1:8023/api/espacios/authorized"  # URI de redirección tras la autorización
+            scope:  # Define los scopes permitidos para este cliente
+              - openid
+              - profile
+              - read
+              - write
+            client-name: client-cochera
+        provider:
+          spring:
+            issuer-uri: "http://127.0.0.1:9000"  # URL base del servidor de autorización

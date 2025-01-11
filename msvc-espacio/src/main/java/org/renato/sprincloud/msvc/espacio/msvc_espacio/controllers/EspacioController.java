@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -17,7 +19,12 @@ public class EspacioController {
     @Autowired
     private EspacioService service;
 
-    @GetMapping
+    @GetMapping("/authorized")
+    public Map<String, String> authorized(@RequestParam String code){
+        return Collections.singletonMap("code", code);
+    }
+
+    @GetMapping("/user/listar")
     public List<Espacio> listar(){
         return service.listar();
     }

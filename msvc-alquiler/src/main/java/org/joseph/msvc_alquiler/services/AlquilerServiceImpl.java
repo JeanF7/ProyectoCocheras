@@ -152,4 +152,10 @@ public class AlquilerServiceImpl implements AlquilerService{
         return Optional.empty();
     }
 
+    @Override
+    @Transactional
+    public void eliminarDetalleAlquilerPorId(Long id) {
+        alquilerRepository.eliminarDetalleAlquilerPorId(id);
+    }
+
 }

@@ -26,4 +26,6 @@ public interface AlquilerService {
     Optional<Espacio> eliminarEspacio(Espacio espacio, Long alquilerId);
 
     Optional<Alquiler> porIdConEspacio(Long id);
+
+    void eliminarDetalleAlquilerPorId(Long id);
 }
