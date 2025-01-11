@@ -37,6 +37,11 @@ public class AlquilerController {
         return alquilerService.listar();
     }
 
+    @GetMapping("/admin/listar")
+    public List<Alquiler> listarPersonalAdmin() {
+        return alquilerService.listar();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> detalleAlquiler(@PathVariable Long id) {
         Optional<Alquiler> optionalPersonal = alquilerService.porId(id);
