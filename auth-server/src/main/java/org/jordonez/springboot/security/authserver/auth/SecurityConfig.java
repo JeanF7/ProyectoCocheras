@@ -4,8 +4,10 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -13,23 +15,25 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -39,15 +43,16 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Bean
     @Order(1)
@@ -60,14 +65,12 @@ public class SecurityConfig {
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .with(authorizationServerConfigurer, (authorizationServer) ->
                         authorizationServer
-                                .oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
+                                .oidc(Customizer.withDefaults()) // Habilitar OpenID Connect 1.0
                 )
                 .authorizeHttpRequests((authorize) ->
                         authorize
                                 .anyRequest().authenticated()
                 )
-                // Redirect to the login page when not authenticated from the
-                // authorization endpoint
                 .exceptionHandling((exceptions) -> exceptions
                         .defaultAuthenticationEntryPointFor(
                                 new LoginUrlAuthenticationEntryPoint("/login"),
@@ -85,44 +88,25 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers("/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")  // Usa "ROLE_ADMIN"
-                                .requestMatchers("/api/alquiler/user/**").hasAuthority("ROLE_USER")    // Usa "ROLE_USER"
-                                .anyRequest().authenticated()                             // Cualquier otra solicitud debe estar autenticada
+                                .requestMatchers("/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers("/api/alquiler/user/**").hasAuthority("ROLE_USER")
+                                .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
-                .formLogin(Customizer.withDefaults());  // Habilita el inicio de sesión por formulario
+                .formLogin(Customizer.withDefaults()); // Habilitar el formulario de inicio de sesión
 
         return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user1 = User.builder()
-                .username("jean")
-                .password("{noop}jean")
-                .roles("ADMIN")
-                .build();
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService((userDetailsService)); // Utiliza la interfaz
+        authProvider.setPasswordEncoder(new BCryptPasswordEncoder()); // Usar BCrypt para encriptar contraseñas
 
-        UserDetails user2 = User.builder()
-                .username("renzo")
-                .password("{noop}renzo")
-                .roles("USER")
-                .build();
-
-        UserDetails user3 = User.builder()
-                .username("renato")
-                .password("{noop}renato")
-                .roles("USER")
-                .build();
-
-        UserDetails user4 = User.builder()
-                .username("pepe")
-                .password("{noop}pepe")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user1, user2, user3, user4);
+        ProviderManager authenticationManager = new ProviderManager(authProvider);
+        return authenticationManager;
     }
-
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
@@ -135,8 +119,6 @@ public class SecurityConfig {
                 .redirectUri("http://127.0.0.1:8029/api/alquiler/login/oauth2/code/client-cochera")
                 .redirectUri("http://127.0.0.1:8029/api/alquiler/authorized")
                 .postLogoutRedirectUri("http://127.0.0.1:8029/logout")
-                .scope("read")
-                .scope("write")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
@@ -159,16 +141,13 @@ public class SecurityConfig {
     }
 
     private static KeyPair generateRsaKey() {
-        KeyPair keyPair;
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
-            keyPair = keyPairGenerator.generateKeyPair();
-        }
-        catch (Exception ex) {
+            return keyPairGenerator.generateKeyPair();
+        } catch (Exception ex) {
             throw new IllegalStateException(ex);
         }
-        return keyPair;
     }
 
     @Bean
@@ -182,27 +161,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
-        return context -> {
-            Authentication principal = context.getPrincipal();
-            if (principal instanceof UsernamePasswordAuthenticationToken) {
-                User user = (User) principal.getPrincipal();
-
-                // Agrega los roles como claim separado
-                List<String> roles = user.getAuthorities().stream()
-                        .map(authority -> authority.getAuthority().replace("ROLE_", "")) // Remueve el prefijo "ROLE_"
-                        .toList();
-
-                // Agrega el scope y roles en los claims
-                context.getClaims().claim("roles", roles);
-                if (roles.contains("ADMIN")) {
-                    context.getClaims().claim("scope", List.of("read", "write"));
-                } else if (roles.contains("USER")) {
-                    context.getClaims().claim("scope", List.of("read"));
-                }
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtTokenCustomizer() {
+        return (context) -> {
+            if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+                context.getClaims().claims((claims) -> {
+                    Set<String> roles = AuthorityUtils.authorityListToSet(context.getPrincipal().getAuthorities())
+                            .stream()
+                            .map(c -> c.replaceFirst("^ROLE_", ""))
+                            .collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
+                    claims.put("roles", roles);
+                });
             }
         };
     }
-
-
 }

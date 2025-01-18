@@ -24,7 +24,7 @@ public class SecurityConfig {
             // Extraemos el claim 'roles' del JWT
             List<String> roles = jwt.getClaimAsStringList("roles");
             return roles.stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Agregamos el prefijo 'ROLE_' si es necesario
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                     .collect(Collectors.toList());
         });
         return converter;
@@ -39,17 +39,8 @@ public class SecurityConfig {
                         // Permite acceso a todos a la ruta "/authorized"
                         .requestMatchers(HttpMethod.GET, "/api/alquiler/authorized").permitAll()
 
-                        // Solo los usuarios con el scope "SCOPE_read" pueden acceder a "/list"
-                        // Descomentado como ejemplo para permisos de scope
-//                .requestMatchers(HttpMethod.GET, "/user/listar").hasAuthority("SCOPE_read")
-
-                        // Solo los usuarios con el scope "SCOPE_write" pueden acceder a "/create"
-                        // Descomentado como ejemplo para permisos de scope
-//                .requestMatchers(HttpMethod.POST, "/admin/crearAlquiler").hasAuthority("SCOPE_write")
-
                         // Solo los usuarios con el role "ADMIN" pueden acceder a "/admin"
                         .requestMatchers(HttpMethod.GET, "/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
 
                         // Solo los usuarios con el role "USER" pueden acceder a "/user"
                         .requestMatchers(HttpMethod.GET, "/api/alquiler/user/**").hasAuthority("ROLE_USER")
@@ -66,7 +57,6 @@ public class SecurityConfig {
                         resourceServer.jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))  // Aplica el convertidor de JWT
                 );
-
         return httpSecurity.build();
     }
 

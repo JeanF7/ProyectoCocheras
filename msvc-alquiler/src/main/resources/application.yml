@@ -15,8 +15,6 @@ spring:
             scope:
               - openid
               - profile
-              - read
-              - write
             client-name: client-cochera
         provider:
           spring:
