@@ -1,7 +1,11 @@
 package org.jordonez.springboot.security.authserver.models.entities;
 
 import jakarta.persistence.*;
-
+/*
+NUEVO
+ENTIDAD DE USUARIO PARA LA GESTIÓN DE USUARIOS EN EL AUTH SERVER
+Y ASÍ NO SE GUARDEN LOS USUARIOS EN MEMORIA
+ */
 @Entity
 @Table(name = "users")
 public class User {

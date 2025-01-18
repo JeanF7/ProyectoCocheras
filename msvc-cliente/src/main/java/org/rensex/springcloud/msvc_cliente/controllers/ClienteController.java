@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -19,8 +17,18 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping
-    public List<Cliente> listarClientes() {
+    @GetMapping("/authorized")
+    public Map<String, String> authorized(@RequestParam String code){
+        return Collections.singletonMap("code", code);
+    }
+
+    @GetMapping("/user/listar")
+    public List<Cliente> listarClienteUser() {
+        return clienteService.listar();
+    }
+
+    @GetMapping("/admin/listar")
+    public List<Cliente> listarClienteAdmin() {
         return clienteService.listar();
     }
 

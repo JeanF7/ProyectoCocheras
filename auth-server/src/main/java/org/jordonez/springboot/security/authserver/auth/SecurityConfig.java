@@ -51,6 +51,10 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /*
+    NUEVO
+    INYECCIÓN DEL USERDETAILSSERVICE
+     */
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -98,6 +102,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /*
+    NUEVO
+    ESTE MÉTODO REEMPLAZA AL METODO userDetailsService()
+    PARA QUE LOS USUARIOS NO SE CARGUEN EN MEMORIA DIRECTAMENTE
+    SINO, QUE SE RECUPEREN DE LA BASE DE DATOS DEL AUTH SERVER
+    ASI MISMO, SE HACE USO DE LA INTERFAZ DE USERDETAILSSERVICE
+     */
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -160,6 +171,12 @@ public class SecurityConfig {
         return AuthorizationServerSettings.builder().build();
     }
 
+    /*
+    ACTUALIZACIÓN
+    MEJORA DEL MÉTODO ANTIGUO DE JWTTOKENCUSTOMIZER
+    ESTE MÉTODO ES UNO POR DEFECTO QUE NOS DA SPRING SECURITY EN SU
+    PÁGINA WEB, SIN CAMBIOS. ES MÁS EFICIENTE QUE EL ANTERIOR
+     */
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtTokenCustomizer() {
         return (context) -> {

@@ -8,6 +8,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+/*
+NUEVO
+IMPLEMENTACIÓN DE LA INTERFAZ DE USERDETAILSSERVICE
+- LA INTERFAZ ESTA DADA POR DEFECTO POR EL SPRING SECURITY
+POR ENDE, SOLO ES NECESARIO LA IMPLEMENTACION Y SOBREESCRIBIR UN
+MÉTODO YA EXISTENTE
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
