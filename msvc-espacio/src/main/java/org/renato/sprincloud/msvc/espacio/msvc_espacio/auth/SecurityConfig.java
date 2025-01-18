@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/*
+NUEVO
+ se implementó en cada uno de los microservicios la autenticación
+*/
 @Configuration
 public class SecurityConfig {
 

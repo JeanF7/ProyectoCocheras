@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/*
+NUEVO
+SE AGREGARON NUEVAS DIRECCIONES A LOS ENDPOINTS PARA QUE LOS MÉTODOS SOLO FUNCIONEN CON EL ROL CORRESPONDIENTE (ADMIN O USER)
+ */
 @RestController
 @RequestMapping("/api/espacios")
 public class EspacioController {
@@ -29,19 +33,31 @@ public class EspacioController {
         return service.listar();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/listar")
+    public List<Espacio> listarAdmin(){
+        return service.listar();
+    }
+
+    @GetMapping("/admin/{id}")
     public ResponseEntity<?> detalle(@PathVariable Long id){
         Optional<Espacio> espacioOptional = service.porId(id);
         if(espacioOptional.isPresent()) return ResponseEntity.ok(espacioOptional);
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> detalleUser(@PathVariable Long id){
+        Optional<Espacio> espacioOptional = service.porId(id);
+        if(espacioOptional.isPresent()) return ResponseEntity.ok(espacioOptional);
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/admin")
     public ResponseEntity<?> crear(@RequestBody Espacio espacio){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.guardar(espacio));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<?> editar(@RequestBody Espacio espacio, @PathVariable Long id){
         Optional<Espacio> espacioOptional = service.porId(id);
         if(espacioOptional.isPresent()) {
@@ -55,7 +71,7 @@ public class EspacioController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){
         Optional<Espacio> espacioOptional = service.porId(id);
         if(espacioOptional.isPresent()) {
@@ -65,7 +81,7 @@ public class EspacioController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/save-all")
+    @PostMapping("/admin/save-all")
     public ResponseEntity<?> saveAll(@RequestBody List<Espacio> espacios) {
         if (espacios == null || espacios.isEmpty()) {
             return ResponseEntity.badRequest().body("La lista de Clientes está vacía.");
@@ -74,7 +90,7 @@ public class EspacioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(alquileresGuardados);
     }
 
-    @GetMapping("/disponibles")
+    @GetMapping("/admin/disponibles")
     public ResponseEntity<?> listarPorDisponibilidad(@RequestParam boolean disponibilidad) {
         List<Espacio> espacios = service.listarPorDisponibilidad(disponibilidad);
         if (espacios.isEmpty()) {
@@ -83,7 +99,16 @@ public class EspacioController {
         return ResponseEntity.ok(espacios);
     }
 
-    @GetMapping("/tipo/{tipoEspacio}")
+    @GetMapping("/user/disponibles")
+    public ResponseEntity<?> listarPorDisponibilidadUser(@RequestParam boolean disponibilidad) {
+        List<Espacio> espacios = service.listarPorDisponibilidad(disponibilidad);
+        if (espacios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(espacios);
+    }
+
+    @GetMapping("/admin/tipo/{tipoEspacio}")
     public ResponseEntity<?> listarPorTipoEspacio(@PathVariable String tipoEspacio) {
         List<Espacio> espacios = service.listarPorTipoEspacio(tipoEspacio);
         if (espacios.isEmpty()) {
@@ -92,7 +117,16 @@ public class EspacioController {
         return ResponseEntity.ok(espacios);
     }
 
-    @GetMapping("/tarifa")
+    @GetMapping("/user/tipo/{tipoEspacio}")
+    public ResponseEntity<?> listarPorTipoEspacioUser(@PathVariable String tipoEspacio) {
+        List<Espacio> espacios = service.listarPorTipoEspacio(tipoEspacio);
+        if (espacios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(espacios);
+    }
+
+    @GetMapping("/admin/tarifa")
     public ResponseEntity<?> listarPorTarifa(@RequestParam double minTarifa, @RequestParam double maxTarifa) {
         List<Espacio> espacios = service.listarPorTarifa(minTarifa, maxTarifa);
         if (espacios.isEmpty()) {
@@ -101,7 +135,16 @@ public class EspacioController {
         return ResponseEntity.ok(espacios);
     }
 
-    @GetMapping("/ubicacion")
+    @GetMapping("/user/tarifa")
+    public ResponseEntity<?> listarPorTarifaUser(@RequestParam double minTarifa, @RequestParam double maxTarifa) {
+        List<Espacio> espacios = service.listarPorTarifa(minTarifa, maxTarifa);
+        if (espacios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(espacios);
+    }
+
+    @GetMapping("/admin/ubicacion")
     public ResponseEntity<?> listarPorUbicacion(@RequestParam String ubicacion) {
         List<Espacio> espacios = service.listarPorUbicacion(ubicacion);
         if (espacios.isEmpty()) {
@@ -110,10 +153,22 @@ public class EspacioController {
         return ResponseEntity.ok(espacios);
     }
 
-    @GetMapping("/espacios-por-alquiler")
+    @GetMapping("/user/ubicacion")
+    public ResponseEntity<?> listarPorUbicacionUser(@RequestParam String ubicacion) {
+        List<Espacio> espacios = service.listarPorUbicacion(ubicacion);
+        if (espacios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(espacios);
+    }
+
+    @GetMapping("/admin/espacios-por-alquiler")
     public ResponseEntity<?> espacioPorVenta(@RequestParam List<Long> ids){
         return ResponseEntity.ok(service.espaciosPorId(ids));
     }
 
-
+    @GetMapping("/user/espacios-por-alquiler")
+    public ResponseEntity<?> espacioPorVentaUser(@RequestParam List<Long> ids){
+        return ResponseEntity.ok(service.espaciosPorId(ids));
+    }
 }

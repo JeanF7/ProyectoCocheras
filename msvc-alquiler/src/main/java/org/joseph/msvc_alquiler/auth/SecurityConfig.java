@@ -36,11 +36,17 @@ public class SecurityConfig {
 
         httpSecurity
                 .authorizeHttpRequests((http) -> http
-                        // Permite acceso a todos a la ruta "/authorized"
+                        /*
+                        NUEVO
+                        Para empezar logramos implementar las correctas uris para cada microservicio
+                        */
                         .requestMatchers(HttpMethod.GET, "/api/alquiler/authorized").permitAll()
 
                         // Solo los usuarios con el role "ADMIN" pueden acceder a "/admin"
                         .requestMatchers(HttpMethod.GET, "/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/alquiler/admin/**").hasAuthority("ROLE_ADMIN")
 
                         // Solo los usuarios con el role "USER" pueden acceder a "/user"
                         .requestMatchers(HttpMethod.GET, "/api/alquiler/user/**").hasAuthority("ROLE_USER")

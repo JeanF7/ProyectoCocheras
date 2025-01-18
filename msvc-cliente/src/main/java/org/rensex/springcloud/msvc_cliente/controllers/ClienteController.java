@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/*
+NUEVO
+SE AGREGARON NUEVAS DIRECCIONES A LOS ENDPOINTS PARA QUE LOS MÉTODOS SOLO FUNCIONEN CON EL ROL CORRESPONDIENTE (ADMIN O USER)
+ */
 @RestController
 @RequestMapping("/api/cliente")
 public class ClienteController {
@@ -32,19 +36,25 @@ public class ClienteController {
         return clienteService.listar();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/{id}")
     public ResponseEntity<?> detalleCliente(@PathVariable Long id) {
         Optional<Cliente> optionalCliente = clienteService.porId(id);
         return optionalCliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/{membresia}")
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> detalleClienteUser(@PathVariable Long id) {
+        Optional<Cliente> optionalCliente = clienteService.porId(id);
+        return optionalCliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/admin/{membresia}")
     public ResponseEntity<?> crearCliente(@RequestBody Cliente cliente, @PathVariable String membresia) {
         cliente.setMembresia(new Membresia(membresia));
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.guardar(cliente));
     }
 
-    @PostMapping("crear-varios/{membresia}")
+    @PostMapping("/admin/crear-varios/{membresia}")
     public ResponseEntity<?> crearVariosCliente(@RequestBody List<Cliente> clientes, @PathVariable String membresia) {
         for (int i = 0; i < clientes.size(); i++) {
             clientes.get(i).setMembresia(new Membresia(membresia));
@@ -53,7 +63,7 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{idCliente}")
+    @PutMapping("/admin/{idCliente}")
     public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, @PathVariable Long idCliente) {
         Optional<Cliente> optionalCliente = clienteService.porId(idCliente);
         if (optionalCliente.isPresent()) {
@@ -71,7 +81,7 @@ public class ClienteController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> eliminarCliente(@PathVariable Long id) {
         Optional<Cliente> optionalCliente = clienteService.porId(id);
         if (optionalCliente.isPresent()) {
@@ -81,7 +91,7 @@ public class ClienteController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/save-all")
+    @PostMapping("/admin/save-all")
     public ResponseEntity<?> saveAll(@RequestBody List<Cliente> clientes) {
         if (clientes == null || clientes.isEmpty()) {
             return ResponseEntity.badRequest().body("La lista de Clientes está vacía.");
@@ -90,7 +100,7 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(alquileresGuardados);
     }
 
-    @GetMapping("/buscar-por-nombre/{nombre}")
+    @GetMapping("/admin/buscar-por-nombre/{nombre}")
     public ResponseEntity<?> detalleCliente(@PathVariable String nombre) {
         List<Cliente> listaCliente = clienteService.porNombre(nombre);
         if (listaCliente.isEmpty()) {
@@ -99,7 +109,16 @@ public class ClienteController {
         return ResponseEntity.ok(listaCliente);
     }
 
-    @GetMapping("/buscar-por-nombre-contiene/{keyword}")
+    @GetMapping("/user/buscar-por-nombre/{nombre}")
+    public ResponseEntity<?> detalleClienteUser(@PathVariable String nombre) {
+        List<Cliente> listaCliente = clienteService.porNombre(nombre);
+        if (listaCliente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listaCliente);
+    }
+
+    @GetMapping("/admin/buscar-por-nombre-contiene/{keyword}")
     public ResponseEntity<?> buscarPorNombreContiene(@PathVariable String keyword) {
         List<Cliente> listaCliente = clienteService.porNombreContaining(keyword);
         if (listaCliente.isEmpty()) {
@@ -108,7 +127,16 @@ public class ClienteController {
         return ResponseEntity.ok(listaCliente);
     }
 
-    @GetMapping("/buscar-por-dni/{dni}")
+    @GetMapping("/user/buscar-por-nombre-contiene/{keyword}")
+    public ResponseEntity<?> buscarPorNombreContieneUser(@PathVariable String keyword) {
+        List<Cliente> listaCliente = clienteService.porNombreContaining(keyword);
+        if (listaCliente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listaCliente);
+    }
+
+    @GetMapping("/admin/buscar-por-dni/{dni}")
     public ResponseEntity<?> buscarPorDni(@PathVariable String dni) {
         List<Cliente> listaCliente = clienteService.porDni(dni);
         if (listaCliente.isEmpty()) {
@@ -117,7 +145,16 @@ public class ClienteController {
         return ResponseEntity.ok(listaCliente);
     }
 
-    @GetMapping("/buscar-por-fecha-registro/{fecha}")
+    @GetMapping("/user/buscar-por-dni/{dni}")
+    public ResponseEntity<?> buscarPorDniUser(@PathVariable String dni) {
+        List<Cliente> listaCliente = clienteService.porDni(dni);
+        if (listaCliente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listaCliente);
+    }
+
+    @GetMapping("/admin/buscar-por-fecha-registro/{fecha}")
     public ResponseEntity<?> buscarPorFechaRegistro(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
         List<Cliente> listaCliente = clienteService.porFechaRegistroAfter(fecha);
         if (listaCliente.isEmpty()) {
@@ -126,7 +163,16 @@ public class ClienteController {
         return ResponseEntity.ok(listaCliente);
     }
 
-    @GetMapping("/buscar-por-membresia/{nombreMembresia}")
+    @GetMapping("/user/buscar-por-fecha-registro/{fecha}")
+    public ResponseEntity<?> buscarPorFechaRegistroUser(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
+        List<Cliente> listaCliente = clienteService.porFechaRegistroAfter(fecha);
+        if (listaCliente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listaCliente);
+    }
+
+    @GetMapping("/admin/buscar-por-membresia/{nombreMembresia}")
     public ResponseEntity<?> buscarPorMembresia(@PathVariable String nombreMembresia) {
         List<Cliente> listaCliente = clienteService.porMembresiaNombre(nombreMembresia);
         if (listaCliente.isEmpty()) {
@@ -135,8 +181,26 @@ public class ClienteController {
         return ResponseEntity.ok(listaCliente);
     }
 
-    @GetMapping("/listar-ordenados-por-fecha")
+    @GetMapping("/user/buscar-por-membresia/{nombreMembresia}")
+    public ResponseEntity<?> buscarPorMembresiaUser(@PathVariable String nombreMembresia) {
+        List<Cliente> listaCliente = clienteService.porMembresiaNombre(nombreMembresia);
+        if (listaCliente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listaCliente);
+    }
+
+    @GetMapping("/admin/listar-ordenados-por-fecha")
     public ResponseEntity<?> listarOrdenadosPorFecha() {
+        List<Cliente> listaCliente = clienteService.listarOrdenadosPorFechaRegistroDesc();
+        if (listaCliente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listaCliente);
+    }
+
+    @GetMapping("/user/listar-ordenados-por-fecha")
+    public ResponseEntity<?> listarOrdenadosPorFechaUser() {
         List<Cliente> listaCliente = clienteService.listarOrdenadosPorFechaRegistroDesc();
         if (listaCliente.isEmpty()) {
             return ResponseEntity.notFound().build();

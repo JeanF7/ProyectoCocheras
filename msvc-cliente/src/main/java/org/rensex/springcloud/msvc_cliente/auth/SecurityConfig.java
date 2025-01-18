@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/*
+NUEVO
+NUEVA CLASE PARA QUE CLIENTE TAMBIÉN TENGA AUTENTICACIÓN Y AUTORIZACIÓN Y REQUIERA DE UN TOKEN DE ACCESO
+ */
+
 @Configuration
 public class SecurityConfig {
 
@@ -21,7 +26,6 @@ public class SecurityConfig {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            // Extraemos el claim 'roles' del JWT
             List<String> roles = jwt.getClaimAsStringList("roles");
             return roles.stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Agregamos el prefijo 'ROLE_' si es necesario
@@ -36,20 +40,16 @@ public class SecurityConfig {
 
         httpSecurity
                 .authorizeHttpRequests((http) -> http
-                        // Permite acceso a todos a la ruta "/authorized"
                         .requestMatchers(HttpMethod.GET, "/api/cliente/authorized").permitAll()
-
-                        // Solo los usuarios con el scope "SCOPE_read" pueden acceder a "/list"
-                        // Descomentado como ejemplo para permisos de scope
-//                .requestMatchers(HttpMethod.GET, "/user/listar").hasAuthority("SCOPE_read")
-
-                        // Solo los usuarios con el scope "SCOPE_write" pueden acceder a "/create"
-                        // Descomentado como ejemplo para permisos de scope
-//                .requestMatchers(HttpMethod.POST, "/admin/crearAlquiler").hasAuthority("SCOPE_write")
-
+                        /*
+                        NUEVO
+                        logramos implementar las correctas uris para cada microservicio
+                        */
                         // Solo los usuarios con el role "ADMIN" pueden acceder a "/admin"
                         .requestMatchers(HttpMethod.GET, "/api/cliente/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/cliente/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/cliente/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/cliente/admin/**").hasAuthority("ROLE_ADMIN")
 
                         // Solo los usuarios con el role "USER" pueden acceder a "/user"
                         .requestMatchers(HttpMethod.GET, "/api/cliente/user/**").hasAuthority("ROLE_USER")
@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .oauth2Login(login -> login
                         .loginPage("/auth2/authorization/client-cochera")  // Página de login personalizada
                 )
-                .oauth2Client(withDefaults())  // Configura el cliente OAuth2
+                .oauth2Client(withDefaults())
                 .oauth2ResourceServer(resourceServer ->
                         resourceServer.jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))  // Aplica el convertidor de JWT

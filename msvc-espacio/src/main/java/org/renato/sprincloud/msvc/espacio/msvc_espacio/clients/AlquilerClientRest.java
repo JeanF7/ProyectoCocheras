@@ -3,7 +3,10 @@ package org.renato.sprincloud.msvc.espacio.msvc_espacio.clients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+/*
+NUEVO
+seguimos con la conexión doble de los microservicios espacio y alquiler
+*/
 @FeignClient(name="msvc-alquiler", url = "http://localhost:8029/api/alquiler")
 public interface AlquilerClientRest {
     @DeleteMapping("/eliminar-ventaProducto/{id}")
