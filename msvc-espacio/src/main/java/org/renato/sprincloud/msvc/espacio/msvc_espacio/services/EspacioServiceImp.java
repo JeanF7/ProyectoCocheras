@@ -1,5 +1,6 @@
 package org.renato.sprincloud.msvc.espacio.msvc_espacio.services;
 
+import org.renato.sprincloud.msvc.espacio.msvc_espacio.clients.AlquilerClientRest;
 import org.renato.sprincloud.msvc.espacio.msvc_espacio.models.entities.Espacio;
 import org.renato.sprincloud.msvc.espacio.msvc_espacio.repositories.EspacioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import java.util.Optional;
 public class EspacioServiceImp implements EspacioService{
     @Autowired
     private EspacioRepository repository;
+
+    @Autowired
+    private AlquilerClientRest clientRest;
 
 
     @Override
@@ -36,6 +40,7 @@ public class EspacioServiceImp implements EspacioService{
     @Override
     public void eliminar(Long id) {
         repository.deleteById(id);
+        clientRest.eliminarDetalleAlquilerPorId(id);
     }
 
     @Override
@@ -73,5 +78,7 @@ public class EspacioServiceImp implements EspacioService{
     public List<Espacio> espaciosPorId(Iterable<Long> ids) {
         return (List<Espacio>) repository.findAllById(ids);
     }
+
+
 
 }
